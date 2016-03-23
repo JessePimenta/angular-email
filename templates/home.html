@@ -1,0 +1,48 @@
+<div class="small-4 columns" ng-controller='MailListingController'>
+  <h2>Sidebar</h2>
+  <ul id='emailListing'>
+    <!--orderBy is a built in angular filter. it takes two arguments, the attribute to order by, and a boolean which tells the function if reverse order is true or not. when true, it will reverse the order by the most recent date to the oldest.  -->
+    <li ng-repeat='mail in (email | orderBy:"sent_at":true)' ng-click="setSelectedMail(mail)">
+      <div class="container emailListing" ng-class='{selected: isSelected(mail)}'>
+        <div class="small-8 columns">{{mail.from}}</div>
+        <div class="small-12 columns">{{mail.subject}}</div>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<div class="small-8 columns" ng-controller="ContentController">
+<div ng-show="!selectedMail">
+  <h1>No conversation selected</h1>
+</div>
+<div ng-show="selectedMail">
+  <form id='replyForm' ng-submit='sendEmailReply()' ng-show='showingReply'>
+    <div class="row collapse">
+
+      <div class="small-1 columns">
+        <span class='prefix'>To</span>
+      </div>
+      <div class="small-11 columns">
+        <input ng-model="reply.to" type="email" placeholder="">
+      </div>
+      <div class="small-12 columns">
+        <textarea ng-model='reply.body'>{{reply.body}}</textarea>
+      </div>
+    </div>
+
+      <button class='button radius' ng-click='sendReply()'>send</button>
+      <button class='button radius alert' ng-click='toggleReplyForm()'>cancel</button>
+    </form>
+    <div class='row header'>
+      <div class="small-6 columns">{{selectedMail.subject}}</div>
+      <div class="small-6 columns">{{selectedMail.sent_at | date:'MM/dd/yy'}}</div>
+    </div>
+  <div class="row actions">
+    <div class="small-8 columns">{{selectedMail.from.join(", ")}} to {{selectedMail.to}}</div>
+    <a ng-click="toggleReplyForm()" class="button radius push-1">Reply</a>
+  </div>
+  <div class="small-12 columns" ng-bind-html-unsafe="selectedMail.body">
+    {{selectedMail.body}}
+  </div>
+    </div>
+</div>

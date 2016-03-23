@@ -1,0 +1,51 @@
+<div class="row">
+  <h1>Update Your Settings</h1>
+  <form name='form'  ng-submit='updateSettings()'>
+    <fieldset>
+      <legend>Update Settings</legend>
+      <div class="row">
+        <div class="small-8 columns">
+          <label>Name</label>
+          <input type='text' name="name" placeholder='name' ng-model='settings.name' ng-minlength=3 ng-maxlength=20 ng-pattern="/^[a-zA-Z]+$/" required>
+          <div class="" ng-show="form.name.$dirty && form.name.$invalid">
+            <div ng-show="form.name.$error.required">Bruh is you dumb?</div>
+            <div ng-show="form.name.$error.minlength">It needs to be longer than 3 characters bruh.</div>
+            <div ng-show="form.name.$error.pattern">Only letters bruh.</div>
+            <div ng-show="form.name.$error.maxlength">Quit playin bruh.</div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="small-8 columns">
+          <label>Email</label>
+          <input type='email' name="email" placeholder='email' ng-model='settings.email' ng-minlength=5 ng-maxlength=50 required>
+          <div class="" ng-show="form.email.$dirty && form.email.$invalid">
+            <span ng-show="form.email.$error.email">Don't forget that @ sign bruh.</span>
+            <span ng-show="form.email.$error.minlength">How you gon say your email 2 characters tho bruh?</span>
+            <span ng-show="form.email.$error.maxlength">You need a shorter email bruh.</span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="small-8 columns">
+          <label>Age</label>
+          <input type='number' name="age" placeholder='age' ng-model='settings.age' min='3' max='199' required>
+          <div class="" ng-show="form.age.$dirty && form.age.$invalid">
+          <div ng-show='form.age.$error.age'>Quit lying about your age bruh.</div>
+          <div ng-show='form.age.$error.min'>You gotta be at least 3 to know how to use this site bruh.</div>
+          <div ng-show='form.age.$error.max'>If you really over 200, I'd like to meet you bruh.</div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="push-9 small-3">
+          <button type="submit" class="button" ng-disabled="form.$dirty && form.$invalid">Update</button>
+        </div>
+      </div>
+      <br>
+      Name: {{settings.name}}
+      <br> Email: {{settings.email}}
+      <br> Age: {{settings.age}}
+    </fieldset>
+  </form>
+</div>
