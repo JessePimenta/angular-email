@@ -1,16 +1,20 @@
 <div class="small-4 columns" ng-controller='MailListingController'>
-  <h2>Sidebar</h2>
+  <!--$ is a special prop that can match on any property of the object  -->
+<input type="number" placeholder="filter messages by years" ng-model='nYearsAgo'>
+<!-- <input type="search" placeholder="filter by subject" ng-model='search.subject'> -->
   <ul id='emailListing'>
     <!--orderBy is a built in angular filter. it takes two arguments, the attribute to order by, and a boolean which tells the function if reverse order is true or not. when true, it will reverse the order by the most recent date to the oldest.  -->
-    <li ng-repeat='mail in (email | orderBy:"sent_at":true)' ng-click="setSelectedMail(mail)">
-      <div class="container emailListing" ng-class='{selected: isSelected(mail)}'>
-        <div class="small-8 columns">{{mail.from}}</div>
-        <div class="small-12 columns">{{mail.subject}}</div>
-      </div>
+    <!-- limitTo takes a single argument. we pass in the array and limit it to 4 emails. if we pass a number that is larger than our array, it will simply pass in every object in the array. if we pass in a negative number, we can get the last 4 emails rather than the first four. -->
+    <li email-listing email='mail' action="setSelectedMail(selectedMail)"
+    ng-repeat='mail in (email | orderBy:"sent_at":true | filter:searchPastNYears)'>
     </li>
   </ul>
 </div>
-
+<!--there are three ways to implement custom directives-->
+<!-- <div nifty-directive="value"></div>
+<div class="nifty-directive: expression;"></div>
+<nifty-directive action="expression"></nifty-directive> -->
+<!-- directive: nifty-directive expression  -->
 <div class="small-8 columns" ng-controller="ContentController">
 <div ng-show="!selectedMail">
   <h1>No conversation selected</h1>

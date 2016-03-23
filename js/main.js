@@ -53,9 +53,23 @@ $scope.setSelectedMail = function(mail) {
 $scope.isSelected = function(mail){
   if ($scope.selectedMail) {
     return $scope.selectedMail == mail;
+    }
   }
-}
 });
+
+app.directive('emailListing', function(){
+  return {
+    restrict: 'EA', // specifiying what kind of directive this will be
+    replace: false, // do we want to replace the elment or append
+    scope: {
+      email: '=', // accept an object as a parameter
+      action: '&', // accept a function as a parameter
+      shouldUseGraveter: '@' // accept string as parameter
+
+    }, // we create an object hash which creates an isolate scope, meaning it doe not actually inherit from the parent scope. this is useful for reusable components so we dont manipulate the parent scope. the object hash defines how the local scope derives from the parent.
+    templateUrl: '/templates/emailListing.html' // this template can now access the variables in our scope specified in this directive
+  }
+})
 
 app.controller('ContentController',["$scope", "$rootScope", "mailService", function($scope, $rootScope, mailService){
 
@@ -89,6 +103,7 @@ $scope.reply = {}
 }]);
 app.controller('MailListingController',['$scope', 'mailService', function($scope, mailService){
   $scope.email = [];
+  $scope.nYearsAgo = 20;
 
 
   mailService.getMail()
@@ -102,6 +117,15 @@ app.controller('MailListingController',['$scope', 'mailService', function($scope
     $scope.email = data.all
     console.log('error');
   });
+
+$scope.searchPastNYears = function(email) {
+  var emailSentAtDate = new Date(email.sent_at),
+  nYearsAgoDate = new Date();
+
+  nYearsAgoDate.setFullYear(nYearsAgoDate.getFullYear() - $scope.nYearsAgo)
+  return emailSentAtDate > nYearsAgoDate;
+}
+
 }])
 
 app.controller('SettingsController',function($scope){
